@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ECMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="255" />
+          <Property Name="City" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="ExpenseDetails">
+          <Key>
+            <PropertyRef Name="DetailID" />
+          </Key>
+          <Property Name="DetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpenseID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="CostCenter" Type="int" Nullable="false" />
+          <Property Name="GLCode" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="Currency" Type="varchar" MaxLength="3" />
+          <Property Name="ExhangeRate" Type="decimal" Precision="18" Scale="6" />
+          <Property Name="Gst" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ClaimCurrAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ClaimAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExpenseMaster">
+          <Key>
+            <PropertyRef Name="ExpenseID" />
+          </Key>
+          <Property Name="ExpenseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequesterID" Type="int" Nullable="false" />
+          <Property Name="ApproverID" Type="int" />
+          <Property Name="ApprovedDate" Type="datetime" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="BranchCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="BankAccount" Type="varchar" MaxLength="50" />
+          <Property Name="BankBranch" Type="varchar" MaxLength="50" />
+          <Property Name="BankAccName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ECM.dbo.uvwExpenseDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="uvwExpenseDetails">
+          <Key>
+            <PropertyRef Name="DetailID" />
+            <PropertyRef Name="ExpenseID" />
+            <PropertyRef Name="CostCenter" />
+            <PropertyRef Name="GLCode" />
+            <PropertyRef Name="ClaimAmount" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="StatusDesc" />
+          </Key>
+          <Property Name="DetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpenseID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="varchar" MaxLength="30" />
+          <Property Name="CostCenter" Type="int" Nullable="false" />
+          <Property Name="GLCode" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="Currency" Type="varchar" MaxLength="3" />
+          <Property Name="ExhangeRate" Type="decimal" Precision="18" Scale="6" />
+          <Property Name="Gst" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ClaimCurrAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ClaimAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="CostCenterDesc" Type="varchar" MaxLength="7" />
+          <Property Name="GLCodeDesc" Type="varchar" MaxLength="27" />
+          <Property Name="StatusDesc" Type="varchar" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ECM.dbo.uvwExpenseMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="uvwExpenseMaster">
+          <Key>
+            <PropertyRef Name="ExpenseID" />
+            <PropertyRef Name="RequesterID" />
+            <PropertyRef Name="Reference" />
+            <PropertyRef Name="BranchCode" />
+            <PropertyRef Name="Amount" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="StatusDesc" />
+          </Key>
+          <Property Name="ExpenseID" Type="int" Nullable="false" />
+          <Property Name="RequesterID" Type="int" Nullable="false" />
+          <Property Name="ApproverID" Type="int" />
+          <Property Name="ApprovedDate" Type="varchar" MaxLength="30" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Date" Type="varchar" MaxLength="30" />
+          <Property Name="BranchCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="BankAccount" Type="varchar" MaxLength="50" />
+          <Property Name="BankBranch" Type="varchar" MaxLength="50" />
+          <Property Name="BankAccName" Type="varchar" MaxLength="50" />
+          <Property Name="RequesterName" Type="varchar" MaxLength="511" />
+          <Property Name="ApproverName" Type="varchar" MaxLength="511" />
+          <Property Name="StatusDesc" Type="varchar" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ExpenseDetails_ExpenseMaster">
+          <End Role="ExpenseMaster" Type="Self.ExpenseMaster" Multiplicity="1" />
+          <End Role="ExpenseDetails" Type="Self.ExpenseDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpenseMaster">
+              <PropertyRef Name="ExpenseID" />
+            </Principal>
+            <Dependent Role="ExpenseDetails">
+              <PropertyRef Name="ExpenseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="usp_InsertUpdateExpenses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ExpenseID" Type="int" Mode="In" />
+          <Parameter Name="Flag" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="ECMModelStoreContainer">
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpenseDetails" EntityType="Self.ExpenseDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpenseMaster" EntityType="Self.ExpenseMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="uvwExpenseDetails" EntityType="Self.uvwExpenseDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [uvwExpenseDetails].[DetailID] AS [DetailID], 
+    [uvwExpenseDetails].[ExpenseID] AS [ExpenseID], 
+    [uvwExpenseDetails].[Date] AS [Date], 
+    [uvwExpenseDetails].[CostCenter] AS [CostCenter], 
+    [uvwExpenseDetails].[GLCode] AS [GLCode], 
+    [uvwExpenseDetails].[Description] AS [Description], 
+    [uvwExpenseDetails].[Currency] AS [Currency], 
+    [uvwExpenseDetails].[ExhangeRate] AS [ExhangeRate], 
+    [uvwExpenseDetails].[Gst] AS [Gst], 
+    [uvwExpenseDetails].[ClaimCurrAmount] AS [ClaimCurrAmount], 
+    [uvwExpenseDetails].[ClaimAmount] AS [ClaimAmount], 
+    [uvwExpenseDetails].[Status] AS [Status], 
+    [uvwExpenseDetails].[CostCenterDesc] AS [CostCenterDesc], 
+    [uvwExpenseDetails].[GLCodeDesc] AS [GLCodeDesc], 
+    [uvwExpenseDetails].[StatusDesc] AS [StatusDesc]
+    FROM [dbo].[uvwExpenseDetails] AS [uvwExpenseDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="uvwExpenseMaster" EntityType="Self.uvwExpenseMaster" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [uvwExpenseMaster].[ExpenseID] AS [ExpenseID], 
+    [uvwExpenseMaster].[RequesterID] AS [RequesterID], 
+    [uvwExpenseMaster].[ApproverID] AS [ApproverID], 
+    [uvwExpenseMaster].[ApprovedDate] AS [ApprovedDate], 
+    [uvwExpenseMaster].[Reference] AS [Reference], 
+    [uvwExpenseMaster].[Date] AS [Date], 
+    [uvwExpenseMaster].[BranchCode] AS [BranchCode], 
+    [uvwExpenseMaster].[Amount] AS [Amount], 
+    [uvwExpenseMaster].[Status] AS [Status], 
+    [uvwExpenseMaster].[BankAccount] AS [BankAccount], 
+    [uvwExpenseMaster].[BankBranch] AS [BankBranch], 
+    [uvwExpenseMaster].[BankAccName] AS [BankAccName], 
+    [uvwExpenseMaster].[RequesterName] AS [RequesterName], 
+    [uvwExpenseMaster].[ApproverName] AS [ApproverName], 
+    [uvwExpenseMaster].[StatusDesc] AS [StatusDesc]
+    FROM [dbo].[uvwExpenseMaster] AS [uvwExpenseMaster]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ExpenseDetails_ExpenseMaster" Association="Self.FK_ExpenseDetails_ExpenseMaster">
+            <End Role="ExpenseMaster" EntitySet="ExpenseMaster" />
+            <End Role="ExpenseDetails" EntitySet="ExpenseDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ECMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ECMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="ECMModel.Employee" />
+          <EntitySet Name="uvwExpenseMasters" EntityType="ECMModel.uvwExpenseMaster" />
+          <EntitySet Name="uvwExpenseDetails" EntityType="ECMModel.uvwExpenseDetail" />
+          <EntitySet Name="ExpenseDetails" EntityType="ECMModel.ExpenseDetail" />
+          <EntitySet Name="ExpenseMasters" EntityType="ECMModel.ExpenseMaster" />
+          <AssociationSet Name="FK_ExpenseDetails_ExpenseMaster" Association="ECMModel.FK_ExpenseDetails_ExpenseMaster">
+            <End Role="ExpenseMaster" EntitySet="ExpenseMasters" />
+            <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
+          </AssociationSet>
+          <FunctionImport Name="usp_InsertUpdateExpenses">
+            <Parameter Name="ExpenseID" Mode="In" Type="Int32" />
+            <Parameter Name="Flag" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="uvwExpenseMaster">
+          <Key>
+            <PropertyRef Name="ExpenseID" />
+            <PropertyRef Name="RequesterID" />
+            <PropertyRef Name="Reference" />
+            <PropertyRef Name="BranchCode" />
+            <PropertyRef Name="Amount" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="StatusDesc" />
+          </Key>
+          <Property Name="ExpenseID" Type="Int32" Nullable="false" />
+          <Property Name="RequesterID" Type="Int32" Nullable="false" />
+          <Property Name="ApproverID" Type="Int32" />
+          <Property Name="ApprovedDate" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Reference" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="BranchCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="BankAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankBranch" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankAccName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RequesterName" Type="String" MaxLength="511" FixedLength="false" Unicode="false" />
+          <Property Name="ApproverName" Type="String" MaxLength="511" FixedLength="false" Unicode="false" />
+          <Property Name="StatusDesc" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="uvwExpenseDetail">
+          <Key>
+            <PropertyRef Name="DetailID" />
+            <PropertyRef Name="ExpenseID" />
+            <PropertyRef Name="CostCenter" />
+            <PropertyRef Name="GLCode" />
+            <PropertyRef Name="ClaimAmount" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="StatusDesc" />
+          </Key>
+          <Property Name="DetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExpenseID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CostCenter" Type="Int32" Nullable="false" />
+          <Property Name="GLCode" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="ExhangeRate" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="Gst" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ClaimCurrAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ClaimAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="CostCenterDesc" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="GLCodeDesc" Type="String" MaxLength="27" FixedLength="false" Unicode="false" />
+          <Property Name="StatusDesc" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ExpenseDetail">
+          <Key>
+            <PropertyRef Name="DetailID" />
+          </Key>
+          <Property Name="DetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExpenseID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CostCenter" Type="Int32" Nullable="false" />
+          <Property Name="GLCode" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="ExhangeRate" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="Gst" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ClaimCurrAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ClaimAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="ExpenseMaster" Relationship="ECMModel.FK_ExpenseDetails_ExpenseMaster" FromRole="ExpenseDetail" ToRole="ExpenseMaster" />
+        </EntityType>
+        <EntityType Name="ExpenseMaster">
+          <Key>
+            <PropertyRef Name="ExpenseID" />
+          </Key>
+          <Property Name="ExpenseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequesterID" Type="Int32" Nullable="false" />
+          <Property Name="ApproverID" Type="Int32" />
+          <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
+          <Property Name="Reference" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="BranchCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="BankAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankBranch" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankAccName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ExpenseDetails" Relationship="ECMModel.FK_ExpenseDetails_ExpenseMaster" FromRole="ExpenseMaster" ToRole="ExpenseDetail" />
+        </EntityType>
+        <Association Name="FK_ExpenseDetails_ExpenseMaster">
+          <End Type="ECMModel.ExpenseMaster" Role="ExpenseMaster" Multiplicity="1" />
+          <End Type="ECMModel.ExpenseDetail" Role="ExpenseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpenseMaster">
+              <PropertyRef Name="ExpenseID" />
+            </Principal>
+            <Dependent Role="ExpenseDetail">
+              <PropertyRef Name="ExpenseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ECMModelStoreContainer" CdmEntityContainer="ECMEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="ECMModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="uvwExpenseMasters">
+            <EntityTypeMapping TypeName="ECMModel.uvwExpenseMaster">
+              <MappingFragment StoreEntitySet="uvwExpenseMaster">
+                <ScalarProperty Name="StatusDesc" ColumnName="StatusDesc" />
+                <ScalarProperty Name="ApproverName" ColumnName="ApproverName" />
+                <ScalarProperty Name="RequesterName" ColumnName="RequesterName" />
+                <ScalarProperty Name="BankAccName" ColumnName="BankAccName" />
+                <ScalarProperty Name="BankBranch" ColumnName="BankBranch" />
+                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="ApproverID" ColumnName="ApproverID" />
+                <ScalarProperty Name="RequesterID" ColumnName="RequesterID" />
+                <ScalarProperty Name="ExpenseID" ColumnName="ExpenseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="uvwExpenseDetails">
+            <EntityTypeMapping TypeName="ECMModel.uvwExpenseDetail">
+              <MappingFragment StoreEntitySet="uvwExpenseDetails">
+                <ScalarProperty Name="StatusDesc" ColumnName="StatusDesc" />
+                <ScalarProperty Name="GLCodeDesc" ColumnName="GLCodeDesc" />
+                <ScalarProperty Name="CostCenterDesc" ColumnName="CostCenterDesc" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ClaimAmount" ColumnName="ClaimAmount" />
+                <ScalarProperty Name="ClaimCurrAmount" ColumnName="ClaimCurrAmount" />
+                <ScalarProperty Name="Gst" ColumnName="Gst" />
+                <ScalarProperty Name="ExhangeRate" ColumnName="ExhangeRate" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GLCode" ColumnName="GLCode" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ExpenseID" ColumnName="ExpenseID" />
+                <ScalarProperty Name="DetailID" ColumnName="DetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpenseDetails">
+            <EntityTypeMapping TypeName="ECMModel.ExpenseDetail">
+              <MappingFragment StoreEntitySet="ExpenseDetails">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ClaimAmount" ColumnName="ClaimAmount" />
+                <ScalarProperty Name="ClaimCurrAmount" ColumnName="ClaimCurrAmount" />
+                <ScalarProperty Name="Gst" ColumnName="Gst" />
+                <ScalarProperty Name="ExhangeRate" ColumnName="ExhangeRate" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GLCode" ColumnName="GLCode" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ExpenseID" ColumnName="ExpenseID" />
+                <ScalarProperty Name="DetailID" ColumnName="DetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpenseMasters">
+            <EntityTypeMapping TypeName="ECMModel.ExpenseMaster">
+              <MappingFragment StoreEntitySet="ExpenseMaster">
+                <ScalarProperty Name="BankAccName" ColumnName="BankAccName" />
+                <ScalarProperty Name="BankBranch" ColumnName="BankBranch" />
+                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="ApproverID" ColumnName="ApproverID" />
+                <ScalarProperty Name="RequesterID" ColumnName="RequesterID" />
+                <ScalarProperty Name="ExpenseID" ColumnName="ExpenseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_InsertUpdateExpenses" FunctionName="ECMModel.Store.usp_InsertUpdateExpenses" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

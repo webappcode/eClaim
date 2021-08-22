@@ -1,0 +1,848 @@
+﻿
+@{ ViewBag.Title = "Index"; }
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <h2 class="panel-title pull-left">
+                Expense Claim
+            </h2>
+            <button style="margin-right:5px" id="addNewItem" class="btn btn-primary pull-right">Add New</button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <table id="claimsTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th> Ref.</th>
+                    <th>Requester</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Approver</th>
+                    <th>Date Approved</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="newClaimModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width:90%" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">New Expense Claim</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <input type="hidden" id="expenseId" />
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            Reference
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" id="reference" placeholder="" class="form-control" />
+                            <h5 id="refcheck" style="color: red;">
+                                Please fill the Reference
+                            </h5>
+                        </div>
+                        <label class="control-label col-md-2">
+                            Submit Date
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" id="submit_date" placeholder="" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            Requester
+                        </label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="requester"></select>
+                        </div>
+                        <label class="control-label col-md-2">
+                            Approver
+                        </label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="approver"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            Branch Code
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" id="branch" placeholder="" class="form-control" />
+                            <h5 id="branchcheck" style="color: red;">
+                                Please fill the Branch Code
+                            </h5>
+                        </div>
+                        <label class="control-label col-md-2">
+                            Acc Name
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" id="acc_name" placeholder="" class="form-control" />
+                            <h5 id="acc_namecheck" style="color: red;">
+                                Please fill the Acc Name
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            Bank Code
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" id="bank_code" placeholder="" class="form-control" />
+                            <h5 id="bank_codecheck" style="color: red;">
+                                Please fill the Bank Code
+                            </h5>
+                        </div>
+                        <label class="control-label col-md-2">
+                            Bank Acc No.
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" id="bank_acc" placeholder="" class="form-control" />
+                            <h5 id="bank_acccheck" style="color: red;">
+                                Please fill the Bank Acc No.
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            Status
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" id="main_status" placeholder="" class="form-control" readonly />
+                        </div>
+                        <label class="control-label col-md-2">
+                            Total Amount
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" id="main_amount" placeholder="" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top:10px">Expense Claim Items</h3>
+
+                <table id="detailsTable" class="table">
+                    <thead>
+                        <tr>
+                            <th style="width:10%">Trans Dt</th>
+                            <th style="width:10%">Cost Ct</th>
+                            <th style="width:10%">GL Code</th>
+                            <th style="width:10%">Description</th>
+                            <th style="width:10%">Currency</th>
+                            <th style="width:10%">Amount</th>
+                            <th style="width:10%">GST</th>
+                            <th style="width:10%">Rate</th>
+                            <th style="width:10%">Total Amt</th>
+                            <th style="width:10%"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <a class="btn btn-info" id="addMore">Add Detail</a>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button id="saveExpense" type="button" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="claimDetailsModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Expense Claim Items</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <input type="hidden" id="detailId" />
+                        <label class="control-label col-md-3">
+                            Cost Centre
+                        </label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="cost_center">
+                                <option value="1">IT</option>
+                                <option value="2">Finance</option>
+                                <option value="3">HR</option>
+                                <option value="4">Sales</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Category
+                        </label>
+                        <div class="col-md-9">
+                            <select class="form-control" id="category">
+                                <option value="4165">Staff Reimbursement Mobile</option>
+                                <option value="4190">Postage</option>
+                                <option value="4191">Couriers</option>
+                                <option value="4200">Stationary</option>
+                                <option value="4311">International Fares</option>
+                                <option value="4312">International Accomondation</option>
+                                <option value="4313">International Expenses</option>
+                                <option value="4321">Local Fares</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Trans Date
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" class="datepicker form-control" datatype="date" id="trans_date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Description
+                        </label>
+                        <div class="col-md-9">
+                            <input type="text" id="description" placeholder="Description" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Currency
+                        </label>
+                        <div class="col-md-3">
+                            <select class="form-control" id="currency">
+                                <option value="MYR">MYR</option>
+                                <option value="AUD">AUD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="CHF">CHF</option>
+                                <option value="CNY">CNY</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="JPY">JPY</option>
+                                <option value="USD">USD</option>
+                                <option value="SGD">SGD</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Amount
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" id="amount" placeholder="Amount" value="0.00" class="form-control" />
+                        </div>
+                        <h5 id="amtcheck" style="color: red;">
+                            Please enter a value greater than 0.00
+                        </h5>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            GST
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" id="gst" placeholder="GST" value="0.00" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Exchange Rate
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" id="ex_rate" placeholder="" class="form-control" value="0.00" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            Total Amt(RM)
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" id="ttl_amt" placeholder="" class="form-control" value="0.00" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveDetail" type="button" class="btn btn-primary">Save Update</button>
+                <button id="addToList" type="button" class="btn btn-primary">Add To List</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script>
+        $(function () {
+
+            //Validation
+            $('#refcheck').hide();
+            $('#amtcheck').hide();
+            $('#branchcheck').hide();
+            $('#acc_namecheck').hide();
+            $('#bank_codecheck').hide();
+            $('#bank_acccheck').hide();
+
+            $('#bank_acc').keyup(function () {
+                validateBankAcc();
+            });
+
+            $('#bank_code').keyup(function () {
+                validateBankCode();
+            });
+
+            $('#acc_name').keyup(function () {
+                validateAccName();
+            });
+            $('#branch').keyup(function () {
+                validateBranch();
+            });
+
+            $('#reference').keyup(function () {
+                validateReference();
+            });
+
+            $('#amount').keyup(function () {
+                validateAmount();
+            });
+
+            function validateReference() {
+                let refValue = $('#reference').val();
+                if (refValue.length == '') {
+                    $('#refcheck').show();
+                    return false;
+                }
+                else {
+                    $('#refcheck').hide();
+                }
+            }
+
+            function validateAmount() {
+                let amtValue = $('#amount').val();
+                if (amtValue.length == '' || parseFloat(amtValue) == 0) {
+                    $('#amtcheck').show();
+                    return false;
+                }
+                else {
+                    $('#amtcheck').hide();
+                }
+            }
+
+            function validateBranch() {
+                let branchValue = $('#branch').val();
+                if (branchValue.length == '') {
+                    $('#branchcheck').show();
+                    return false;
+                }
+                else {
+                    $('#branchcheck').hide();
+                }
+            }
+
+            function validateAccName() {
+                let accValue = $('#acc_name').val();
+                if (accValue.length == '') {
+                    $('#acc_namecheck').show();
+                    return false;
+                }
+                else {
+                    $('#acc_namecheck').hide();
+                }
+            }
+
+            function validateBankCode() {
+                let bankCodeValue = $('#bank_code').val();
+                if (bankCodeValue.length == '') {
+                    $('#bank_codecheck').show();
+                    return false;
+                }
+                else {
+                    $('#bank_codecheck').hide();
+                }
+            }
+
+            function validateBankAcc() {
+                let bankAccValue = $('#bank_acc').val();
+                if (bankAccValue.length == '') {
+                    $('#bank_acccheck').show();
+                    return false;
+                }
+                else {
+                    $('#bank_acccheck').hide();
+                }
+            }
+
+            //Populate DropDownList
+            $.ajax({
+                type: 'GET',
+                url: '/Home/getEmployees',
+                datatype: 'JSON',
+                data: {},
+                success: function (data) {
+                    $('#requester').empty();
+                    $('#approver').empty();
+                    $.each(data, function (i, item) {
+                        $('#requester').append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                        $('#approver').append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+                    });
+                },
+                error: function (data) { alert(data.responseText); }
+            });
+
+            $("#trans_date").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'dd/mm/yy'
+            });
+            $("#submit_date").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'dd/mm/yy'
+            });
+
+            var d = new Date(), date = ((d.getMonth() + 1) + '/' + (d.getDate()) + '/' + d.getFullYear());
+            $('#trans_date').val(date);
+            $('#submit_date').val(date);
+
+            $("#amount").keydown(function (event) {
+                // Allow only backspace and delete
+                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 190) {
+                    // let it happen, don't do anything
+                }
+                else {
+                    // Ensure that it is a number and stop the keypress
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+            });
+
+            $("#currency").change(function () {
+                val = $(this).val();
+
+                $("#amount").val('0.00');
+                $("#gst").val('0.00');
+                $("#ttl_amt").val('0.00');
+
+                if (val == 'MYR') {
+                    $("#ex_rate").val('0.00');
+                } else {
+                    getCurrencyRateInMYR(val);
+                }
+            });
+
+            $("#amount").blur(function () {
+                var num = parseFloat($(this).val());
+                var cleanNum = num.toFixed(2);
+                $(this).val(cleanNum);
+
+                var rate = $("#ex_rate").val();
+                var curr = $("#currency").val();
+                var currAmt = (parseFloat(cleanNum) * parseFloat(rate)).toFixed(2);
+                if (cleanNum > 0) {
+                    if (curr == 'MYR' || parseFloat(rate) == 0) {
+                        $("#ttl_amt").val(cleanNum);
+                    } else {
+                        $("#ttl_amt").val(currAmt);
+                    }
+                }
+            });
+
+            var expUrl = '@Url.Action("getExpenses", "Home")';
+
+            var table = $("#claimsTable").DataTable({
+                "processing": true,
+                "serverSide": true,
+                "filter": true,
+                "orderMulti": false,
+                "ajax": {
+                    "url": expUrl,
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+
+                    { "data": "Reference", "name": "Reference", "autoWidth": true },
+                    { "data": "RequesterName", "name": "RequesterName", "autoWidth": true },
+                    { "data": "Date", "name": "Date", "autoWidth": true },
+                    { "data": "Amount", "name": "Amount", "autoWidth": true },
+                    { "data": "ApproverName", "name": "ApproverName", "autoWidth": true },
+                    { "data": "ApprovedDate", "name": "ApprovedDate", "autoWidth": true },
+                    { "data": "Status", "name": "Status", "autoWidth": true },
+                    { "data": null, "name": "Action", "defaultContent": '<a href="#" class="editItem">Edit</a>', "autoWidth": true }
+
+                ]
+            });
+
+            $("#addNewItem").click(function (e) {
+                e.preventDefault();
+                $("#reference").val('');
+                $("#requester").val('');
+                $("#approver").val('');
+                $("#branch").val('');
+                $("#main_amount").val('0.00');
+                $("#bank_code").val('');
+                $("#bank_acc").val('');
+                $("#acc_name").val('');
+                $("#expenseId").val('0');
+                $("#detailsTable tbody tr").remove();
+                $("#saveExpense").html("Submit");
+                $('#newClaimModal').find('.modal-title').text('New Expense Claim');
+                $('#newClaimModal').modal('show');
+            });
+
+            $("#addMore").click(function (e) {
+                e.preventDefault();
+                clearItem();
+                $("#saveDetail").hide();
+                $("addToList").show();
+                $('#claimDetailsModal').modal('show');
+            });
+
+            $("#addToList").click(function (e) {
+                e.preventDefault();
+
+                validateAmount();
+
+                var cost_center = $("#cost_center option:selected").text(),
+                    costCenterId = $("#cost_center").val().trim().trim(),
+                    category = $("#category option:selected").text(),
+                    categoryId = $("#category").val().trim(),
+                    trans_date = $("#trans_date").val().trim().trim(),
+                    description = $("#description").val().trim(),
+                    currency = $("#currency").val().trim(),
+                    amount = $("#amount").val().trim(),
+                    gst = $("#gst").val().trim(),
+                    ex_rate = $("#ex_rate").val().trim(),
+                    ttl_amt = $("#ttl_amt").val().trim(),
+                    detailId = 0,
+                    detailsTableBody = $("#detailsTable tbody");
+
+                var table = $("#detailsTable");
+                var firstTd = $("td:first", table);
+                var secondTd = firstTd.next();
+                var thirdTd = secondTd.next();
+
+                if (firstTd.text() == trans_date && secondTd.text() == cost_center && thirdTd.text() == category) {
+                    alert("Error: You're trying to add the same entry");
+                    return;
+                }
+
+                if ($.trim($("#cost_center").val()) == "" || $.trim($("#category").val()) == "" || $.trim($("#trans_date").val()) == "" || parseFloat(amount) == 0)
+                    return;
+
+                var expenseItem = '<tr><td>' + trans_date + '</td><td>' + cost_center + '</td><td>' + category + '</td><td>' + description + '</td><td>' + currency + '</td><td>' + amount + '</td><td>' + gst + '</td><td>' + ex_rate + '</td><td>' + ttl_amt + '</td><td style="display:none;">' + detailId + '</td><td style="display:none;">' + costCenterId + '</td><td style="display:none;">' + categoryId + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+                detailsTableBody.append(expenseItem);
+
+                //Calc master total amount
+                var val = $("#main_amount").val();
+                var tot = (parseFloat(val) + parseFloat(ttl_amt)).toFixed(2);
+                $("#main_amount").val(tot);
+                clearItem();
+            });
+
+            function clearItem() {
+                $("#cost_center").val('1');
+                $("#category").val('4165');
+                $('#trans_date').datepicker('setDate', 'today');
+                $("#description").val('');
+                $("#currency").val('MYR');
+                $("#amount").val('0.00');
+                $("#gst").val('0.00');
+                $("#ex_rate").val('0.00');
+                $("#ttl_amt").val('0.00');
+                $("#main_status").val('');
+
+                $('#refcheck').hide();
+                $('#amtcheck').hide();
+                $('#branchcheck').hide();
+                $('#acc_namecheck').hide();
+                $('#bank_codecheck').hide();
+                $('#bank_acccheck').hide();
+            }
+
+            function getExchangeRate(from, to , amount) {
+                if (from.ToLower() == "myr" && to.ToLower() == "myr")
+                    return amount;
+
+                var toRate = getCurrencyRateInMYR(to);
+                var fromRate = getCurrencyRateInMYR(from);
+
+                if (from.ToLower() == "myr") {
+                    return (amount * toRate);
+                }
+                else if (to.ToLower() == "myr") {
+                    return (amount / fromRate);
+                }
+                else {
+                    return (amount * toRate) / fromRate;
+                }
+            }
+
+            function getCurrencyRateInMYR(currency) {
+                var result;
+                $.ajax({
+                    type: 'GET',
+                    url: '/Home/getRateDetails',
+                    datatype: 'JSON',
+                    //data: {},
+                    data: "baseCurrenry=" + currency,
+                    success: function (json) {
+                        if (json.success) {
+                            result = json.rates.MYR
+                        }
+                        else
+                            result = 0;
+                        $("#ex_rate").val(result);
+                    },
+                    error: function (data) { alert(data.responseText); }
+                });
+            }
+
+            function saveExpense(data) {
+                return $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '@Url.Action("saveExpense", "Home", new { area=""})',
+                    data: data
+                });
+            }
+
+            function saveDetail(data) {
+                return $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '@Url.Action("saveDetail", "Home", new { area=""})',
+                    data: data
+                });
+            }
+
+            function getExpense(id) {
+                return $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("getSingleExpense", "Home", new { area = "" })',
+                    data: "expenseId=" + id
+                });
+            }
+
+            function getSingleExpenseDetail(id) {
+                return $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("getSingleExpenseDetail", "Home", new { area = "" })',
+                    data: "detailId=" + id
+                });
+            }
+
+            function deleteExpenseItem(id) {
+                return $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("deleteExpenseItem", "Home", new { area = "" })',
+                    data: "detailId=" + id
+                });
+            }
+
+            $(document).on('click', 'a.deleteItem', function (e) {
+                e.preventDefault();
+
+                //Calc master total amount
+                var currentRow = $(this).closest("tr");
+                var col1 = currentRow.find("td:eq(8)").text();
+                var curr = $("#main_amount").val();
+                var tot = (parseFloat(curr) - parseFloat(col1)).toFixed(2);
+                $("#main_amount").val(tot);
+
+                var $self = $(this);
+                if ($(this).attr('data-itemId') == "0") {
+                    $(this).parents('tr').css("background-color", "#FF3700").fadeOut(800, function () {
+                        $(this).remove();
+                    });
+                } else {
+                    $.when(deleteExpenseItem($(this).attr('data-itemId'))).then(function (res) {
+                        alert(res.message);
+                        $self.parents('tr').css("background-color", "#FF3700").fadeOut(800, function () {
+                            $(this).remove();
+                        });
+                    }).fail(function (err) {
+
+                    });
+                }
+            });
+
+            $("#saveExpense").click(function (e) {
+                e.preventDefault();
+
+                validateReference();
+                validateBranch();
+                validateAccName();
+                validateBankCode();
+                validateBankAcc();
+
+                if ($.trim($("#reference").val()) == "" || $.trim($("#branch").val()) == "" || $.trim($("#bank_code").val()) == "" || $.trim($("#bank_acc").val()) == "" || $.trim($("#acc_name").val()) == "")
+                    return;
+
+                var expenseArr = [];
+                expenseArr.length = 0;
+
+                $.each($("#detailsTable tbody tr"), function () {
+                    expenseArr.push({
+                        Date: $(this).find('td:eq(0)').html(),
+                        CostCenter: $(this).find('td:eq(10)').html(),
+                        GLCode: $(this).find('td:eq(11)').html(),
+                        Description: $(this).find('td:eq(3)').html(),
+                        Currency: $(this).find('td:eq(4)').html(),
+                        ClaimCurrAmount: $(this).find('td:eq(5)').html(),
+                        Gst: $(this).find('td:eq(6)').html(),
+                        ExhangeRate: $(this).find('td:eq(7)').html(),
+                        ClaimAmount: $(this).find('td:eq(8)').html(),
+                        DetailID: $(this).find('td:eq(9)').html()
+                    });
+                });
+
+                var data = JSON.stringify({
+                    ExpenseID: $("#expenseId").val(),
+                    Reference: $("#reference").val(),
+                    Date: $("#submit_date").val(),
+                    RequesterID: $("#requester").val(),
+                    ApproverID: $("#approver").val(),
+                    BranchCode: $("#branch").val(),
+                    Amount: $("#main_amount").val(),
+                    BankBranch: $("#bank_code").val(),
+                    BankAccount: $("#bank_acc").val(),
+                    BankAccName: $("#acc_name").val(),
+                    ExpDetails: expenseArr
+                });
+
+                $.when(saveExpense(data)).then(function (response) {
+                    console.log(response);
+                    alert(response.message);
+                    $('#newClaimModal').modal('hide');
+                    $('#claimsTable').DataTable().ajax.reload();
+                    clearItem();
+                }).fail(function (err) {
+                    console.log(err);
+                });
+            });
+
+            $("#saveDetail").click(function (e) {
+                e.preventDefault();
+
+                validateAmount();
+
+                var data = JSON.stringify({
+                    DetailID: $("#detailId").val(),
+                    Date: $("#trans_date").val(),
+                    CostCenter: $("#cost_center").val(),
+                    GLCode: $("#category").val(),
+                    Description: $("#description").val(),
+                    Currency: $("#currency").val(),
+                    Gst: $("#gst").val(),
+                    ClaimAmount: $("#ttl_amt").val(),
+                    ClaimCurrAmount: $("#amount").val(),
+                    ExhangeRate: $("#ex_rate").val()
+                });
+
+                //if (parseFloat(ClaimCurrAmount) == 0)
+                //    return;
+
+                $.when(saveDetail(data)).then(function (response) {
+                    console.log(response);
+                    alert(response.message);
+                    $('#claimDetailsModal').modal('hide');
+                    $('#detailsTable').DataTable().ajax.reload();
+                    clearItem();
+                }).fail(function (err) {
+                    console.log(err);
+                });
+            });
+
+            $(document).on("click", '.editItem', function (e) {
+                var data = table.row($(this).parents('tr')).data();
+                //console.log(data);
+                e.preventDefault();
+                var id = data.ExpenseID;
+
+                $.when(getExpense(id)).then(function (res) {
+                    var detArr = [];
+                    $("#reference").val(res.result.Reference);
+                    $("#requester").val(res.result.RequesterID);
+                    $("#approver").val(res.result.ApproverID);
+                    $("#branch").val(res.result.BranchCode);
+                    $("#main_amount").val(res.result.Amount);
+                    $("#bank_code").val(res.result.BankBranch);
+                    $("#bank_acc").val(res.result.BankAccount);
+                    $("#acc_name").val(res.result.BankAccName);
+                    $("#main_status").val(res.result.Status);
+                    $("#expenseId").val(res.result.ExpenseID);
+
+                    $('#detailsTable').find('tbody').empty();
+                    $.each(res.result.ExpDetails, function (i, v) {
+                        detArr.push('<tr><td>' + v.Date + '</td><td>' + v.CostCenterDesc + '</td><td>' + v.GLCodeDesc + '</td><td>' + v.Description + '</td><td>' + v.Currency + '</td><td>' + v.ClaimCurrAmount + '</td><td>' + v.Gst + '</td><td>' + v.ExhangeRate + '</td><td>' + v.ClaimAmount + '</td><td style="display:none;">' + v.DetailID + '</td><td style="display:none;">' + v.CostCenter + '</td><td style="display:none;">' + v.GLCode + '</td><td><a data-itemId="' + v.DetailID + '" href="#" class="deleteItem">Delete</a> | <a href="#" data-itemId="' + v.DetailID + '" class="editDetail">Edit</a></td ></tr > ')
+                    });
+                    $("#detailsTable tbody").append(detArr);
+                    $("#saveExpense").html("Save Update");
+                    $('#newClaimModal').find('.modal-title').text('Edit Expense Claim');
+                    $('#newClaimModal').modal('show');
+
+                }).fail(function (err) {
+                    console.log(err);
+                });
+            });
+
+            $(document).on("click", '.editDetail', function (e) {
+                $("#saveDetail").show('slow');
+                $("addToList").hide('slow');
+                e.preventDefault();
+                var id = $(this).attr("data-itemid");
+
+
+
+                $.when(getSingleExpenseDetail(id)).then(function (res) {
+                    var detArr = [],
+                        data = res.result;
+                    $("#detailId").val(data.DetailID);
+                    $("#cost_center").val(data.CostCenter);
+                    $("#category").val(data.GLCode);
+                    $('#trans_date').val(data.Date);
+                    $("#description").val(data.Description);
+                    $("#currency").val(data.Currency);
+                    $("#amount").val(data.ClaimCurrAmount);
+                    $("#gst").val(data.Gst);
+                    $("#ex_rate").val(data.ExhangeRate);
+                    $("#ttl_amt").val(data.ClaimAmount);
+                    $('#claimDetailsModal').modal('show');
+
+                }).fail(function (err) {
+                    console.log(err);
+                });
+            });
+        });
+
+    </script>
+}
+
